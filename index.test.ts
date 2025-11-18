@@ -144,7 +144,7 @@ const accountEventHandler = new AccountEventHandler({
 describe("Bank Account", () => {
   describe("when new AccountCreatedEvent is received", () => {
     test("AccountCreatedEvent should be processed and saved", async () => {
-      const email = "takuma@example.com";
+      const email = "olu@example.com";
       const accountId = "123";
       const payload: AccountCreatedEventPayload = {
         accountId,
@@ -168,7 +168,7 @@ describe("Bank Account", () => {
 
 describe("AccountEventHandler", () => {
   test("should save the event in events repository", async () => {
-    const email = "takuma@example.com";
+    const email = "olu@example.com";
     const accountId = "123";
     const payload: AccountCreatedEventPayload = {
       accountId,
@@ -200,7 +200,7 @@ describe("AccountEventHandler", () => {
 
 describe("AccountEventProcessor", () => {
   test("should build an account projection", async () => {
-    const email = "takuma@example.com";
+    const email = "olu@example.com";
     const accountId = "123";
     const payload: AccountCreatedEventPayload = {
       accountId,
