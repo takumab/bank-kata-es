@@ -115,7 +115,7 @@ class AccountEventProcessor {
   }
 
   async buildProjection(accountId: string) {
-    // TODO: support other event types beyond accountCreatedEvents
+    // TODO: support other event types beyond accountCreatedEvents and depositConfirmedEvent
     const accountEvents = this.eventsRepository
       .findAllBy(accountId)
       .filter(isAccountCreatedOrDepositConfirmedEvent);
