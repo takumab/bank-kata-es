@@ -83,20 +83,18 @@ class AccountsRepository {
 
 class EventsRepository {
   private events: BaseAccountEvent[] = [];
+  async findAllBy(accountId: string): Promise<BaseAccountEvent[]> {
+    return this.events.filter(
+      (event: BaseAccountEvent) => event.payload.accountId === accountId,
+    );
+  }
   async findById(eventId: string): Promise<BaseAccountEvent | undefined> {
     return this.events.find(
       (event: BaseAccountEvent) => event.eventId === eventId,
     );
   }
-
   async save(event: BaseAccountEvent) {
     this.events.push(event);
-  }
-
-  findAllBy(accountId: string): BaseAccountEvent[] {
-    return this.events.filter(
-      (event: BaseAccountEvent) => event.payload.accountId === accountId,
-    );
   }
 }
 
@@ -116,12 +114,13 @@ class AccountEventProcessor {
 
   async buildProjection(accountId: string) {
     // TODO: support other event types beyond accountCreatedEvents and depositConfirmedEvent
-    const accountEvents = this.eventsRepository
-      .findAllBy(accountId)
-      .filter(isAccountCreatedOrDepositConfirmedEvent);
+    const accountEvents = await this.eventsRepository.findAllBy(accountId);
+    const events = accountEvents.filter(
+      isAccountCreatedOrDepositConfirmedEvent,
+    );
     const emptyAccount = { id: "", balance: 0, customer: { email: "" } };
 
-    const account = accountEvents.reduce((account, event) => {
+    const account = events.reduce((account, event) => {
       if (event.eventType === EventType.DepositConfirmed) {
         const depositConfirmedEvent = event as DepositConfirmedEvent;
         return {
